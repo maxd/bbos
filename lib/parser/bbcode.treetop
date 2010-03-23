@@ -1,0 +1,55 @@
+require File.join(File.dirname(__FILE__), "ast", "bbmarkup")
+require File.join(File.dirname(__FILE__), "ast", "bbtag")
+require File.join(File.dirname(__FILE__), "ast", "bbattribute")
+require File.join(File.dirname(__FILE__), "ast", "bbtext")
+
+module BBos
+  module Parser
+
+    grammar BBCode
+
+      rule markup
+        (text / bbtag)* <BBos::Parser::BBMarkup>
+      end
+
+      rule text
+        ( [^\[] )+ <BBos::Parser::BBText>
+      end
+
+      rule bbtag
+        fullbbtag / emptybbtag
+      end
+
+      rule fullbbtag
+        '[' __attributes:attribute+ ']' __content:markup? '[/' name ']' <BBos::Parser::BBTag>
+      end
+
+      rule emptybbtag
+        '[' __attributes:attribute+ '/]' <BBos::Parser::BBTag>
+      end
+
+      rule attribute
+        __name:name __value:( '=' __string:(string / plain_string) )? whitespace <BBos::Parser::BBAttribute>
+      end
+
+      rule whitespace
+        [ \t\r\n]*
+      end
+
+      rule name
+        [a-zA-Z0-9]+
+      end
+
+      rule string
+        '"' __content:(!'"' .)* '"' <BBos::Parser::BBText>
+      end
+
+      rule plain_string
+        (!('/]' / ']' / ' ' / '\t') .)* <BBos::Parser::BBText>
+      end
+
+    end
+
+  end
+
+end
