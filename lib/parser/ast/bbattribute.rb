@@ -4,8 +4,10 @@ module BBos
     class BBAttribute < Treetop::Runtime::SyntaxNode
 
       def value
-        #TODO: fix hack with rescue
-        Attribute.new(__name.text_value, (__value.__string.value rescue nil))
+        name = __name.text_value
+        value = __value.respond_to?(:__string) ? __value.__string.value : nil
+
+        Attribute.new(name, value)
       end
 
     end
