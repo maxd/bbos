@@ -1,6 +1,7 @@
 require File.join(File.dirname(__FILE__), "ast", "bbmarkup")
 require File.join(File.dirname(__FILE__), "ast", "bbtag")
 require File.join(File.dirname(__FILE__), "ast", "bbattribute")
+require File.join(File.dirname(__FILE__), "ast", "bbattribute_value")
 require File.join(File.dirname(__FILE__), "ast", "bbtext")
 
 module BBos
@@ -13,7 +14,7 @@ module BBos
       end
 
       rule text
-        ( [^\[] )+ <BBos::Parser::BBText>
+        ( '\\' ( '[' / ']' / '\\' ) / [^\[] )+ <BBos::Parser::BBText>
       end
 
       rule bbtag
@@ -41,11 +42,11 @@ module BBos
       end
 
       rule string
-        '"' __content:('\"' / '\\' / !'"' .)* '"' <BBos::Parser::BBText>
+        '"' __content:('\"' / '\\' / !'"' .)* '"' <BBos::Parser::BBAttributeValue>
       end
 
       rule plain_string
-        (!('/]' / ']' / ' ' / '\t') .)* <BBos::Parser::BBText>
+        (!('/]' / ']' / ' ' / '\t') .)* <BBos::Parser::BBAttributeValue>
       end
 
     end

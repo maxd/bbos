@@ -38,10 +38,21 @@ class CommonFunctionalityTest < Test::Unit::TestCase
       assert_equal %q(<a href="%22">Test</a>), @bbcode.to_html(%q([url="\""]Test[/url]))
     end
 
-#TODO: implement escaping in CHARS
-#    should "process escaped brackets in CHARS" do
-#      assert_equal %q(<a href="http://ya.ru">][</a>), @bbcode.format(%q([url=http://ya.ru]\]\[[/url]))
-#    end
+    should "process escaped brackets in CHARS" do
+      assert_equal %q(<a href="http://ya.ru">][</a>), @bbcode.to_html(%q([url=http://ya.ru]\]\[[/url]))
+    end
+
+    should "process escaped brackets in CHARS #2" do
+      assert_equal %q(<a href="http://ya.ru">[/</a>), @bbcode.to_html(%q([url=http://ya.ru]\[/[/url]))
+    end
+
+    should "process escaped brackets in CHARS #3" do
+      assert_equal %q(<a href="http://ya.ru">\</a>), @bbcode.to_html(%q([url=http://ya.ru]\\\\[/url]))
+    end
+
+    should "process escaped brackets in CHARS #4" do
+      assert_equal %q(<a href="http://ya.ru"> \ </a>), @bbcode.to_html(%q([url=http://ya.ru] \\ [/url]))
+    end
 
     should "process unknown tag and return error message #1" do
       assert_equal %Q(<span style="color:red">[Unknown tag 'unknown']</span>), @bbcode.to_html(%Q([unknown][/unknown]))

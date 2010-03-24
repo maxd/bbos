@@ -8,13 +8,13 @@ module BBos
       end
 
       def value
-        respond_to?(:__content) ? unescape(__content.text_value) : text_value
+        unescape(text_value)
       end
 
     private
 
       def unescape(str)
-        str.gsub("\\\\", "\\").gsub("\\\"", "\"")
+        str.gsub("\\\\", "\\").gsub("\\[", "[").gsub("\\]", "]")
       end
       
     end
