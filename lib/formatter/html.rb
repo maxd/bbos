@@ -33,7 +33,7 @@ module BBos
           href = first_attr.value
           href = content unless href
           content = href unless content
-          %Q(<a href="#{href}">#{content}</a>)
+          %Q(<a href="#{URI.escape(href)}">#{content}</a>)
         else
           ""
         end

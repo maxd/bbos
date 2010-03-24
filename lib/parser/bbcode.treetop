@@ -41,7 +41,7 @@ module BBos
       end
 
       rule string
-        '"' __content:(!'"' .)* '"' <BBos::Parser::BBText>
+        '"' __content:('\"' / '\\' / !'"' .)* '"' <BBos::Parser::BBText>
       end
 
       rule plain_string

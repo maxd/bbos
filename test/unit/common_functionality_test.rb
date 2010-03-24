@@ -31,13 +31,12 @@ class CommonFunctionalityTest < Test::Unit::TestCase
     end
 
     should "process any special chars in string" do
-      assert_equal %Q(<a href="][ \t/">Test</a>), @bbcode.to_html(%Q([url="][ \t/"]Test[/url]))
+      assert_equal %Q(<a href="][%20%09/">Test</a>), @bbcode.to_html(%Q([url="][ \t/"]Test[/url]))
     end
 
-#TODO: implement escaping in string
-#    should "process escaped quote in string" do
-#      assert_equal %q(<a href="\"">Test</a>), @bbcode.format(%q([url="\""]Test[/url]))
-#    end
+    should "process escaped quote in string" do
+      assert_equal %q(<a href="%22">Test</a>), @bbcode.to_html(%q([url="\""]Test[/url]))
+    end
 
 #TODO: implement escaping in CHARS
 #    should "process escaped brackets in CHARS" do
