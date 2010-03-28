@@ -5,7 +5,7 @@ module BBos
 
       def accept(visitor)
         attributes = __attributes.elements.collect {|a| a.value }
-        content = respond_to?(:__content) ? __content.accept(visitor) : nil
+        content = respond_to?(:__content) && __content.is_a?(BBBlock) ? __content.accept(visitor) : nil
         content = content == "" ? nil : content
 
         visitor.bbtag(attributes, content)

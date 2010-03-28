@@ -3,8 +3,9 @@ module BBos
 
     class Html
 
-      def initialize(avalible_bbcodes)
+      def initialize(avalible_bbcodes, options = {})
         @avalible_bbcodes = avalible_bbcodes
+        @paragraphs = options.delete(:paragraphs)
       end
 
       def bbtag(attributes, content)
@@ -25,6 +26,10 @@ module BBos
 
       def bbtext(text)
         text
+      end
+
+      def bbblock(content)
+        @paragraphs ? "<p>#{content}</p>" : content
       end
 
       def url_bbtag(attributes, content)

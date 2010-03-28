@@ -1,4 +1,5 @@
-require File.join(File.dirname(__FILE__), "ast", "bbmarkup")
+require File.join(File.dirname(__FILE__), "ast", "bbdocument")
+require File.join(File.dirname(__FILE__), "ast", "bbblock")
 require File.join(File.dirname(__FILE__), "ast", "bbtag")
 require File.join(File.dirname(__FILE__), "ast", "bbattribute")
 require File.join(File.dirname(__FILE__), "ast", "bbattribute_value")
@@ -9,8 +10,12 @@ module BBos
 
     grammar BBCode
 
-      rule markup
-        (text / bbtag)* <BBos::Parser::BBMarkup>
+      rule document
+        ( __block:block block_end )+ <BBos::Parser::BBDocument>
+      end
+
+      rule block
+         ( text / bbtag )+ <BBos::Parser::BBBlock>
       end
 
       rule text
@@ -22,7 +27,7 @@ module BBos
       end
 
       rule fullbbtag
-        '[' __attributes:attribute+ ']' __content:markup? '[/' name ']' <BBos::Parser::BBTag>
+        '[' __attributes:attribute+ ']' __content:block? '[/' name ']' <BBos::Parser::BBTag>
       end
 
       rule emptybbtag
@@ -49,6 +54,14 @@ module BBos
         (!('/]' / ']' / ' ' / '\t') .)* <BBos::Parser::BBAttributeValue>
       end
 
+      rule block_end
+        newline [ \t]* newline / !(.)
+      end
+
+      rule newline
+        "\r"? "\n"
+      end
+      
     end
 
   end

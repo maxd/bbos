@@ -25,7 +25,7 @@ module BBos
       ast = @parser.parse(text)
 
       if ast
-        visitor = Formatter::Html.new(@avalible_bbcodes)
+        visitor = Formatter::Html.new(@avalible_bbcodes, options)
         @extensions.each { |ext| visitor.extend(ext) }
         ast.accept(visitor)
       else
